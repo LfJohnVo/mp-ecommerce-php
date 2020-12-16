@@ -1,0 +1,15 @@
+{
+  "name": "vendor_name/composer",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "john",
+      "email": "vojohn95@gmail.com"
+    }
+  ],
+  "require": {
+    "mercadopago/dx-php": "2.2.1"
+  }
+}
