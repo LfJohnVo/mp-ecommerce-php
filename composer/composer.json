@@ -10,6 +10,7 @@
     }
   ],
   "require": {
-    "mercadopago/dx-php": "2.2.1"
+    "mercadopago/dx-php": "2.2.1",
+    "guzzlehttp/guzzle": "^7.0"
   }
 }
