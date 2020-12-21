@@ -9,11 +9,15 @@ MercadoPago\SDK::setAccessToken($access_token);
 $preference = new MercadoPago\Preference();
 
 $preference->back_urls = array(
-    "success" => "localhost/mp-ecommerce/notificacion.php",
-    "failure" => "localhost/mp-ecommerce/failure?error=failure",
-    "pending" => "localhost/mp-ecommerce/pending?error=pending"
+    "success" => 'localhost/mp-ecommerce/mp/ok.php',
+    "failure" => 'localhost/mp-ecommerce/mp/error.php',
+    "pending" => 'localhost/mp-ecommerce/mp/pending.php'
 );
-$preference->auto_return = "approved";
+
+$preference->auto_return = "all";
+
+$preference->notification_url = 'localhost/mp-ecommerce/mp/mercadopago.php';
+
 
 // Crea un ítem en la preferencia
 $item = new MercadoPago\Item();
