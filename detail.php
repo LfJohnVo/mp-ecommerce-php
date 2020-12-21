@@ -559,9 +559,9 @@ $preference->save();
                                     <input hidden name="price" value="<?php echo $_POST['price'] ?>">
                                 </div>
                                 <!--<button type="submit" class="mercadopago-button">Pagar</button>-->
-                                echo "<a href='$preference->init_point'>
+                                <?php echo "<a href='$preference->init_point'>
                                     <button type='button' class='mercadopago-button' formmethod='post'>Pagar la compra</button>
-                                </a>";
+                                </a>"; ?>
                                 <!--<script
                                         src="https://www.mercadopago.com.mx/integrations/v1/web-payment-checkout.js"
                                         data-preference-id="<?php echo $preference->id; ?>">
