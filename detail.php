@@ -1,4 +1,5 @@
 <?php
+
 require 'composer/vendor/autoload.php';
 $access_token = "TEST-3512230105254367-121621-bc8e603352e37bbf319fa1bb90b1a33c-570416670";
 
@@ -9,38 +10,35 @@ MercadoPago\SDK::setAccessToken($access_token);
 $preference = new MercadoPago\Preference();
 
 $preference->back_urls = array(
-    "success" => 'localhost/mp-ecommerce/mp/ok.php',
-    "failure" => 'localhost/mp-ecommerce/mp/error.php',
-    "pending" => 'localhost/mp-ecommerce/mp/pending.php'
-);
+    "success" => $_SERVER["HTTP_HOST"] . "/respuesta.php?id=success",
+    "failure" => $_SERVER["HTTP_HOST"] . "/respuesta.php?id=failure",
+    "pending" => $_SERVER["HTTP_HOST"] . "/respuesta.php?id=pending");
+
+$preference->auto_return = "approved";
 
 $preference->auto_return = "all";
 
-$preference->notification_url = 'localhost/mp-ecommerce/mp/mercadopago.php';
+$preference->payment_methods = array("excluded_payment_methods" => array(
+    array("id" => "amex")
+),
+    "excluded_payment_types" => array(
+        array("id" => "atm")
+    ),
+    "installments" => 6
+);
+
+$preference->notification_url = $_SERVER["HTTP_HOST"] . '/webhook.php';
 
 
 // Crea un ítem en la preferencia
 $item = new MercadoPago\Item();
+$item->id = $_POST['id'];
 $item->title = $_POST['title'];
 $item->quantity = $_POST['unit'];
 $item->unit_price = $_POST['price'];
 $preference->items = array($item);
 $preference->save();
 
-switch($_POST["type"]) {
-    case "payment":
-        $payment = MercadoPago\Payment.find_by_id($_POST["id"]);
-        break;
-    case "plan":
-        $plan = MercadoPago\Plan.find_by_id($_POST["id"]);
-        break;
-    case "subscription":
-        $plan = MercadoPago\Subscription.find_by_id($_POST["id"]);
-        break;
-    case "invoice":
-        $plan = MercadoPago\Invoice.find_by_id($_POST["id"]);
-        break;
-}
 
 ?>
 
@@ -60,7 +58,7 @@ switch($_POST["type"]) {
             src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
-    <script src="https://www.mercadopago.com/v2/security.js" view="item"></script>
+    <script src="https://www.mercadopago.com/v2/security.js" view="detail.php"></script>
 
 
     <link rel="stylesheet" href="./assets/category-landing.css" media="screen, print">
@@ -561,10 +559,13 @@ switch($_POST["type"]) {
                                     <input hidden name="price" value="<?php echo $_POST['price'] ?>">
                                 </div>
                                 <!--<button type="submit" class="mercadopago-button">Pagar</button>-->
-                                <script
+                                echo "<a href='$preference->init_point'>
+                                    <button type='button' class='mercadopago-button' formmethod='post'>Pagar la compra</button>
+                                </a>";
+                                <!--<script
                                         src="https://www.mercadopago.com.mx/integrations/v1/web-payment-checkout.js"
                                         data-preference-id="<?php echo $preference->id; ?>">
-                                </script>
+                                </script>-->
                             </div>
                         </div>
                     </div>
